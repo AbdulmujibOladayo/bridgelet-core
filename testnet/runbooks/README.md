@@ -12,6 +12,10 @@ This directory contains operational runbooks for diagnosing and resolving issues
 | [`multi-payment-edge-cases.md`](multi-payment-edge-cases.md) | Repeated `record_payment` for same asset | EphemeralAccount |
 | [`failed-sweep-signature.md`](failed-sweep-signature.md) | `SweepController::execute_sweep` signature rejection | SweepController, EphemeralAccount |
 | [`stuck-ephemeral-account.md`](stuck-ephemeral-account.md) | EphemeralAccount won't sweep or expire | EphemeralAccount, SweepController |
+| [`wrong-network-passphrase.md`](wrong-network-passphrase.md) | Transaction rejected with `tx_bad_auth`; signed for the wrong network | Network layer (any contract) |
+| [`insufficient-reserve-errors.md`](insufficient-reserve-errors.md) | Reserve-related failures: network base reserve vs. internal reserve tracking | EphemeralAccount, network layer |
+| [`event-not-appearing-in-horizon.md`](event-not-appearing-in-horizon.md) | Successful transaction but expected contract event missing from Horizon | EphemeralAccount, SweepController |
+| [`contract-not-found-error.md`](contract-not-found-error.md) | RPC cannot resolve a contract ID (stale ID, wrong network, never deployed) | Any contract |
 
 ## Quick Start
 
