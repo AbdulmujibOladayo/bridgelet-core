@@ -41,6 +41,11 @@ export XLM_SAC="CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC"
 
 ## Example index
 
+Keep this table current: whenever an example is added, renamed, or removed
+from `testnet/examples/`, update the matching row in the same change. The
+index is the discovery surface for this directory; a file missing from it is
+effectively unpublished.
+
 | Example | Use it to exercise | Network effect |
 |---|---|---|
 | [Read account state](#read-account-state) | Decode status, expiry, and recorded payments | Read-only |
@@ -53,6 +58,16 @@ export XLM_SAC="CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC"
 | [Error handling](error-handling.md) | Map each contract error discriminant to handling code | Read-only |
 | [Idempotency considerations](idempotency-considerations.md) | Reason about a duplicate sweep and the one safe retry | Read-only |
 | [Postman RPC collection](postman-collection.json) | Raw `simulateTransaction` probes for Postman/HTTP | Read-only |
+| [Signed sweep walkthrough](signed-sweep-walkthrough.md) | End-to-end `execute_sweep` with a real Ed25519 signature | State-changing |
+| [Gas-free claim walkthrough](gas-free-claim-walkthrough.md) | Recipient-signed, relayer-submitted `claim()` without an off-chain signer | State-changing |
+| [Multi-asset sweep](multi-asset-sweep.md) | Sweeping an account with several recorded SEP-41 assets | State-changing |
+| [Expiry and recovery](expiry-and-recovery.md) | Drive an account past `expiry_ledger` and through the recovery path | State-changing |
+| [Batch account creation (mock)](batch-account-creation-mock.md) | Create many ephemeral accounts in a loop while `account_factory` is undeployed | State-changing |
+| [Monitoring a single account lifecycle](monitoring-a-single-account-lifecycle.md) | Subscribe to and order one account's full event sequence for a status dashboard | Read-only |
+| [Testing locked mode](testing-locked-mode.md) | Deploy a locked-mode controller and prove a sweep to another destination is rejected | State-changing |
+| [Update authorized destination](update-authorized-destination-flow.md) | Call `update_authorized_destination()` and verify the `dest_upd` event | State-changing |
+| [Reading contract storage](reading-contract-storage.md) | Inspect persistent storage via RPC when you need a view independent of getters | Read-only |
+| [Integration test harness notes](integration-test-harness-notes.md) | Structure a live-testnet suite around the shared deployment | Guidance |
 
 ## Read account state
 
