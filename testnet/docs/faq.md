@@ -36,6 +36,25 @@ ID you'll find is the unverified hand-committed one in `contract-ids.txt`. It
 also needs a stored `ephemeral_account` WASM hash, and the tooling doesn't set
 that up.
 
+### The changelog and `deployments/testnet.json` list different contract IDs. Which is right?
+
+Neither can be assumed. The git history explains the disagreement: the
+`EphemeralAccount` ID is the same in both, but a later commit (`e7efd55`,
+"redeployment of contracts except ephemeral") changed the other three IDs in
+`deployments/testnet.json` and the changelog entry was not updated. Separately,
+the status registry records all four contracts as undeployed. Confirm any ID on
+the network before relying on it; see
+[versioning.md](versioning.md) for the procedure and
+[`../registry/verify-contract-live.md`](../registry/verify-contract-live.md) for
+the check.
+
+### How do I find out which source version is live?
+
+Read the deployed WASM hash with `stellar contract info hash`, then match it to a
+commit by looking it up in the changelog and rebuilding that commit. The steps,
+and why `git blame` on `deployments/testnet.json` is only a starting point, are
+in [versioning.md](versioning.md).
+
 ### Where do I find the contract IDs?
 
 - **`deployments/testnet.json`**: written by `deploy-testnet.sh`. It has
@@ -47,9 +66,11 @@ that up.
 Testnet is reset from time to time, so check any ID before you rely on it
 (see [overview → Where contract IDs live](./overview.md#where-contract-ids-live-and-how-far-to-trust-them)).
 
-### `docs/testnet-deployment.md` says the script deploys ReserveContract and AccountFactory. Which is right?
+### An older document says the script deploys ReserveContract and AccountFactory. Which is right?
 
-The **script** is right. `scripts/deploy-testnet.sh` only deploys
+Some older documents (including ones that link to a `docs/testnet-deployment.md`,
+which is not in the repository) describe the deployment tooling as covering all
+four contracts. The **script** is right. `scripts/deploy-testnet.sh` only deploys
 `ephemeral_account` and `sweep_controller`. That guide describes where the
 tooling is meant to end up, not what it does today.
 
@@ -97,6 +118,15 @@ No. The deploy script initializes it with `authorized_destination = null`,
 which means **unlocked** mode: any destination is accepted if the Ed25519
 signature from `authorized_signer` is valid. The creator can change this later
 with `update_authorized_destination`.
+
+### My signature looks correct but `execute_sweep` fails. Why?
+
+Most often the nonce moved. `SweepController` keeps one nonce for the whole
+controller, and every successful sweep advances it, including other
+integrators'. A rejected signature is also a **trap** with no error code, not a
+named error. Read `get_nonce()` immediately before signing, and see
+[`../config/nonce-tracking.md`](../config/nonce-tracking.md) and
+[`../examples/error-handling.md`](../examples/error-handling.md).
 
 ### How do I format the signature for `execute_sweep`?
 
