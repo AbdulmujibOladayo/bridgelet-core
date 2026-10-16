@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Bridgelet testnet contract IDs",
+  "description": "Validates the `contracts` block of deployments/testnet.json or an integrator copy of it.",
+  "type": "object",
+  "required": ["network", "contracts"],
+  "properties": {
+    "network": { "const": "testnet" },
+    "contracts": {
+      "type": "object",
+      "required": ["ephemeralAccount", "sweepController"],
+      "properties": {
+        "ephemeralAccount": { "$ref": "#/definitions/contractId" },
+        "sweepController": { "$ref": "#/definitions/contractId" },
+        "reserveContract": { "$ref": "#/definitions/contractId" },
+        "accountFactory": { "$ref": "#/definitions/contractId" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "definitions": {
+    "contractId": {
+      "type": "string",
+      "pattern": "^C[A-Z2-7]{55}$",
+      "description": "Soroban contract address: 56-character strkey starting with C."
+    }
+  }
+}
